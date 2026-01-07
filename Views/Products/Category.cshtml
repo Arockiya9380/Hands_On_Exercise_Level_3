@@ -1,0 +1,69 @@
+@model IEnumerable<Level_3___Advanced_Patterns.ViewModels.ProductViewModel>
+
+@{
+    var categoryName = ViewBag.CategorySlug?.ToString().ToUpper() ?? "CATEGORY";
+    ViewData["Title"] = $"{categoryName} Products";
+}
+
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index">All Products</a></li>
+            <li class="breadcrumb-item active">@categoryName</li>
+        </ol>
+    </nav>
+    
+    <h1>@categoryName Products</h1>
+    <hr />
+    
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            <h4>No products found in this category</h4>
+            <p>There are currently no products in the @categoryName category.</p>
+            <a asp-action="Create" class="btn btn-primary">Add First Product</a>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var product in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">@product.Name</h5>
+                            <p class="text-muted small"><code>@product.SKU</code></p>
+                            <product-rating stars="@product.Rating" />
+                            
+                            <div class="mt-3">
+                                @if (product.DiscountPercentage.HasValue && product.DiscountPercentage > 0)
+                                {
+                                    <p class="mb-1">
+                                        <span class="text-decoration-line-through text-muted">
+                                            $@product.Price.ToString("N2")
+                                        </span>
+                                        <span class="badge bg-danger ms-2">@product.DiscountPercentage% OFF</span>
+                                    </p>
+                                    <p class="fs-4 fw-bold text-success mb-0">$@product.FinalPrice.ToString("N2")</p>
+                                }
+                                else
+                                {
+                                    <p class="fs-4 fw-bold text-primary mb-0">$@product.Price.ToString("N2")</p>
+                                }
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <a asp-action="Details" 
+                               asp-route-category="@ViewBag.CategorySlug" 
+                               asp-route-slug="@product.Slug" 
+                               class="btn btn-primary btn-sm w-100">
+                                <i class="bi bi-eye"></i> View Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

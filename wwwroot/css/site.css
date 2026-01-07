@@ -1,0 +1,35 @@
+.rating {
+    display: inline-block;
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+.rating-small {
+    font-size: 1rem;
+}
+
+.rating .star {
+    color: #ffa500;
+    margin-right: 2px;
+}
+
+.rating .star.filled {
+    color: #ff8c00;
+}
+
+.rating .star.empty {
+    color: #ddd;
+}
+
+.product-card {
+    transition: transform 0.2s;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+}
+
+.featured-products .card {
+    position: sticky;
+    top: 20px;
+}

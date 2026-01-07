@@ -1,0 +1,48 @@
+@model IEnumerable<Level_3___Advanced_Patterns.ViewModels.ProductViewModel>
+
+<div class="featured-products">
+    <div class="card">
+        <div class="card-header bg-warning text-dark">
+            <h5 class="mb-0">⭐ Featured Products</h5>
+        </div>
+        <div class="card-body p-0">
+            @if (Model.Any())
+            {
+                <div class="list-group list-group-flush">
+                    @foreach (var product in Model)
+                    {
+                        <a asp-controller="Products" 
+                           asp-action="Details" 
+                           asp-route-category="@product.CategoryName.ToLower()" 
+                           asp-route-slug="@product.Slug"
+                           class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">@product.Name</h6>
+                                <product-rating stars="@product.Rating" css-class="rating-small" />
+                            </div>
+                            <p class="mb-1">
+                                @if (product.DiscountPercentage.HasValue && product.DiscountPercentage > 0)
+                                {
+                                    <span class="text-decoration-line-through text-muted small">
+                                        $@product.Price.ToString("N2")
+                                    </span>
+                                    <strong class="text-success ms-2">$@product.FinalPrice.ToString("N2")</strong>
+                                    <span class="badge bg-danger ms-1">@product.DiscountPercentage%</span>
+                                }
+                                else
+                                {
+                                    <strong>$@product.Price.ToString("N2")</strong>
+                                }
+                            </p>
+                            <small class="text-muted">@product.CategoryName</small>
+                        </a>
+                    }
+                </div>
+            }
+            else
+            {
+                <p class="p-3 text-muted mb-0">No featured products available</p>
+            }
+        </div>
+    </div>
+</div>
